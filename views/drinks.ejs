@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>DrinkIt</title>
+  </head>
+
+  <body>
+    <p>Welcome to <%= title %>!</p>
+
+    <ul>
+        <% drinks.forEach(function(drink) { %>
+            <li>
+                <%= drink.name %>
+            </li>
+        <% }) %>
+    </ul>
+
+  </body>
+  <script>
+      var drinks = <%- JSON.stringify(drinks) %>
+      console.log(drinks);
+  </script>
+</html>
