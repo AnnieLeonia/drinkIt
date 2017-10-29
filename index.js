@@ -12,11 +12,17 @@ app.get('/', function(req, res){
 });
 
 app.get('/drinks', function(req, res){
-  conn.query('select name from recipes', function (error, results, fields) {
-    if (error) throw error;
-    console.log(results);
+  conn.query('SELECT name FROM recipes', function (error, drinks) {
 
-    res.render('drinks', { title: 'Drinks', drinks: results});
+    res.render('drinks', { title: 'Drinks', drinks});
+  });
+});
+
+app.get('/drinks/:name', function(req, res){
+  const drinkName = req.params.name;
+  conn.query('SELECT ingredient, amount FROM recipeitems WHERE recipe = "' + drinkName + '"', function(error, recipeitems){
+
+    res.render('drink', { title: drinkName + ' - Drink.It', drinkName, recipeitems});
   });
 });
 
