@@ -38,6 +38,10 @@ app.get('/drinks/:name', function(req, res){
     });
 });
 
+app.get('/about', function(req, res){
+  res.render('about', {title: 'About - Drink.It'})
+});
+
 app.get('/newDrink', function(req, res){
   res.render('newDrink', {title:'New Drink - Drink.It'})
 });

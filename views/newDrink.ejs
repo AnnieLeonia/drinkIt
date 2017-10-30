@@ -5,6 +5,7 @@
 
   <body>
     <h1>Let's make a new drink</h1>
+    <a href="/"> Back to Homepage! </a>
 
     <form method="POST">
       <p>
@@ -13,9 +14,42 @@
       </p>
       <p>
         Description for the drink <br/>
-        <textarea name="description"></textarea>
+        <textarea name="description" cols=48></textarea>
       </p>
+      <table id="recipe">
+        <thead>
+          <tr>
+            <th>Amout</th>
+            <th>Ingredient</th>
+            <th></td>
+          </tr>
+        </thead>
+        <tbody id="recipeitems">
+        </tbody>
+      </table>
+      <button onClick=add()>Add</button>
+      <br/><br/></br>
       <input type="submit" value="Create"/>
     </form>
+
+    <script>
+      add()
+
+      function add(){
+        var tbody = document.getElementById("recipeitems")
+        var newRow = tbody.insertRow(-1)
+        newRow.insertCell(0).innerHTML = '<input type="text" name="recipeitems[][amount]" required>'
+        newRow.insertCell(1).innerHTML = '<input type="text" name="recipeitems[][ingredient]" required>'
+        newRow.insertCell(2).innerHTML = '<button onClick=remove(this)>X'
+      }
+
+      function remove(button){
+        var row = button.parentNode.parentNode
+        var tbody = row.parentNode
+        if(tbody.childElementCount > 1){
+          tbody.removeChild(row)
+        }
+      }
+    </script>
   </body>
 </html>
