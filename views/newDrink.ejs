@@ -33,14 +33,16 @@
     </form>
 
     <script>
+      var index = 0
       add()
 
       function add(){
         var tbody = document.getElementById("recipeitems")
         var newRow = tbody.insertRow(-1)
-        newRow.insertCell(0).innerHTML = '<input type="text" name="recipeitems[][amount]" required>'
-        newRow.insertCell(1).innerHTML = '<input type="text" name="recipeitems[][ingredient]" required>'
+        newRow.insertCell(0).innerHTML = `<input type="text" name="recipeitems[${index}][amount]" required>`
+        newRow.insertCell(1).innerHTML = `<input type="text" name="recipeitems[${index}][ingredient]" required>`
         newRow.insertCell(2).innerHTML = '<button onClick=remove(this)>X'
+        index++
       }
 
       function remove(button){

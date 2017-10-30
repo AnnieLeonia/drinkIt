@@ -29,7 +29,7 @@ app.get('/drinks/:name', function(req, res){
         const drinkDescription = recipes[0].description;
         conn.query('SELECT ingredient, amount FROM recipeitems WHERE recipe = ?', [drinkName],
           function(error, recipeitems){
-            res.render('drink', { title: drinkName + ' - Drink.It', drinkName, recipeitems});
+            res.render('drink', { title: drinkName + ' - Drink.It', drinkName, drinkDescription, recipeitems});
           }
         );
       } else {
@@ -49,10 +49,21 @@ app.get('/newDrink', function(req, res){
 app.post('/newDrink', function(req, res){
   const drinkName = req.body.name;
   const drinkDescription =  req.body.description;
+  const recipeitems = req.body.recipeitems;
   conn.query('INSERT INTO recipes(name, description) values (?, ?)',
     [drinkName,drinkDescription], function(error){
       if(error==null){
-        res.redirect('/drinks/' + drinkName);
+        let allItems = recipeitems.map(recipeitem=>
+          [recipeitem.amount, recipeitem.ingredient, drinkName]);
+        conn.query('INSERT INTO recipeitems(amount, ingredient, recipe) values ?',
+          [allItems], function(error){
+            if(error==null){
+              res.redirect('/drinks/' + drinkName);
+            }else{
+              console.log(error);
+              res.send("Sorry, some of the items for " + drinkName + " could not be created!");
+            }
+          });
       } else {
         console.log(error);
         res.send("Sorry, " + drinkName + " could not be created!");
