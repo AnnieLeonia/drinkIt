@@ -21,7 +21,7 @@
           <tr>
             <th>Amout</th>
             <th>Ingredient</th>
-            <th></td>
+            <th></th>
           </tr>
         </thead>
         <tbody id="recipeitems">
@@ -39,9 +39,19 @@
       function add(){
         var tbody = document.getElementById("recipeitems")
         var newRow = tbody.insertRow(-1)
-        newRow.insertCell(0).innerHTML = `<input type="text" name="recipeitems[${index}][amount]" required>`
-        newRow.insertCell(1).innerHTML = `<input type="text" name="recipeitems[${index}][ingredient]" required>`
-        newRow.insertCell(2).innerHTML = '<button onClick=remove(this)>X'
+        newRow.insertCell(0).innerHTML = 
+          `<input type="text" name="recipeitems[${index}][amount]" required>`
+        newRow.insertCell(1).innerHTML = 
+          `<select name="recipeitems[${index}][ingredient]">
+            <option value="" disabled selected>Select ingredient</option>
+            <% ingredients.forEach(function(ingredient) { %>
+              <option value="<%= ingredient.name %>">
+                <%= ingredient.name %>
+              </option>
+            <% }) %>
+          </select>`
+        newRow.insertCell(2).innerHTML = 
+          '<button onClick=remove(this)>X'
         index++
       }
 

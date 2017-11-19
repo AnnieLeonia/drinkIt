@@ -43,7 +43,9 @@ app.get('/about', function(req, res){
 });
 
 app.get('/newDrink', function(req, res){
-  res.render('newDrink', {title:'New Drink - Drink.It'})
+  conn.query('SELECT name FROM ingredients', function(error, ingredients){
+    res.render('newDrink', {title:'New Drink - Drink.It', ingredients})
+  });
 });
 
 app.post('/newDrink', function(req, res){
