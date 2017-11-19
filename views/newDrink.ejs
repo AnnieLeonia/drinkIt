@@ -42,17 +42,37 @@
         newRow.insertCell(0).innerHTML = 
           `<input type="text" name="recipeitems[${index}][amount]" required>`
         newRow.insertCell(1).innerHTML = 
-          `<select name="recipeitems[${index}][ingredient]">
+          `<select name="recipeitems[${index}][ingredient]" onchange="newIngredient(this, value)">
             <option value="" disabled selected>Select ingredient</option>
             <% ingredients.forEach(function(ingredient) { %>
               <option value="<%= ingredient.name %>">
                 <%= ingredient.name %>
               </option>
             <% }) %>
+            <option value="ADD">Add ingredient</option>
           </select>`
         newRow.insertCell(2).innerHTML = 
           '<button onClick=remove(this)>X'
         index++
+      }
+
+      function newIngredient(obj, value){
+        if(value != "ADD"){
+          return;
+        }
+        var ingredient = {
+          name : prompt("Ingredient name"),
+          type : prompt("Ingredient type"),
+          description : prompt("Ingredient description"),
+          percentage : prompt("Ingredient percentage")
+        }
+        obj[obj.selectedIndex].value = ingredient.name;
+        obj[obj.selectedIndex].text = ingredient.name;
+        
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/newIngredient", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(serialize(ingredient));
       }
 
       function remove(button){
@@ -61,6 +81,11 @@
         if(tbody.childElementCount > 1){
           tbody.removeChild(row)
         }
+      }
+
+      function serialize(obj) {
+        var params = Object.keys(obj).map(k => k + '=' + encodeURIComponent(obj[k]))
+        return params.join('&')
       }
     </script>
   </body>
